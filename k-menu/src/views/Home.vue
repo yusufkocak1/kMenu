@@ -1,20 +1,33 @@
 <template>
-  <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl container p-2 mt-10">
+  <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-3xl container p-2 mt-10">
     <div class="max-w-4xl">
-      <div v-for="category in getCategory">
-        <h1 class="border-2 bg-primary-900 text-white my-2 p-2">{{ category.name }}</h1>
-        <div v-for="(item, index) in items.filter(product=>product.category.id === category.id)" :key="index"
-             class="mx-2 grid grid-cols-4 border border-primary-700 p-3 rounded-xl shadow-lg -my-1">
-          <div :key="index" class="col-span-1">{{ item.name }}</div>
-          <div :key="index" class="col-span-1">{{ item.category.name }}</div>
-          <div :key="index" class="col-span-1">{{ item.price }} TL</div>
-          <button
-              class="col-span-1 bg-primary-700 hover:bg-white border hover:border-primary-700 hover:text-primary-700 text-white px-2 py-1 rounded-md "
-              @click="addBasket(item.id)">Sepete ekle
-          </button>
+      <div v-if="showMenu">
+        <button class=" w-8 h-8 rounded-full p-0 border-2 border-sunset-orange-700 text-sunset-orange-700 hover:bg-sunset-orange-700 hover:text-white" @click="showMenu=!showMenu">X</button>
+        <div v-for="category in getCategory">
+          <h1 class="border-2 bg-primary-900 text-white my-2 p-2 ">{{ category.name }}</h1>
+          <div v-for="(item, index) in items.filter(product=>product.category.id === category.id)" :key="index"
+               class="mx-2 grid grid-cols-4 border border-primary-700 p-3 rounded-xl shadow-lg my-1">
+            <div :key="index" class="col-span-1">{{ item.name }}</div>
+            <div :key="index" class="col-span-1">{{ item.category.name }}</div>
+            <div :key="index" class="col-span-1">{{ item.price }} TL</div>
+            <button
+                class="col-span-1 bg-primary-700 hover:bg-white border hover:border-primary-700 hover:text-primary-700 text-white px-2 py-1 rounded-md "
+                @click="addBasket(item.id)">Sepete ekle
+            </button>
+          </div>
         </div>
       </div>
-
+      <div v-else class=" grid grid-cols-1">
+        <img src="../assets/kapak.png"/>
+        <button
+            class="col-span-1 mt-10 p-2 border-2 border-primary-700 bg-white text-primary-700 hover:bg-primary-700 hover:text-white rounded"
+            @click="callWaiter">Garson Çağır
+        </button>
+        <button
+            class="col-span-1 mt-2 p-2 border-2 border-primary-700 bg-white text-primary-700 hover:bg-primary-700 hover:text-white rounded"
+            @click="showMenu=!showMenu">Menuyü Göster
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -30,7 +43,9 @@ export default {
     return {
       restaurantName: "",
       message: "Lütfen bekleyin, restoran bilgileri yükleniyor...",
-      items: []
+      items: [],
+      showMenu: false
+
     };
   },
   created() {
@@ -39,13 +54,7 @@ export default {
 
   },
   methods: {
-    showMenu() {
-      // Menü sayfasına yönlendiriyoruz
-      this.$router.push({
-        name: "MenuPage",
-        params: {id: this.$route.params.id},
-      });
-    },
+
     addBasket(id) {
       alert(this.items.filter(item => item.id == id))
     },
@@ -59,21 +68,20 @@ export default {
       // Garson çağırma işlemlerini burada yapabilirsiniz
       alert("Garson çağrıldı.");
     },
-    removeDuplicates(arr) {
-      let uniqueArr = [];
-      for (let i = 0; i < arr.length; i++) {
-        if (uniqueArr.indexOf(arr[i]) === -1) {
-          uniqueArr.push(arr[i]);
-        }
-      }
-      return uniqueArr;
-    }
+
 
   },
   computed: {
     getCategory() {
+      const categories = [];
 
-      return this.removeDuplicates(this.items.map(item => item.category))
+      for (const item of this.items) {
+        if (!categories.some(category => category.name === item.category.name)) {
+          categories.push(item.category);
+        }
+      }
+
+      return categories
     }
   }
 };
