@@ -17,6 +17,10 @@ public class MenuItem {
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private MenuCategory category;
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    private Restaurant restaurant;
+
 
     @Column(nullable = false)
     private String name;
