@@ -5,17 +5,17 @@
       <div class="w-full md:w-1/2 lg:w-1/3 px-4">
         <div class="bg-white shadow-lg rounded-lg p-6">
           <h2 class="text-2xl font-bold mb-10 text-primary-700">Kayıt Formu</h2>
-          <form >
+          <div>
             <div class="mb-4">
               <label class="block text-primary-700 font-bold mb-2" for="username">
                 Ad
               </label>
               <input
-                  class="appearance-none border rounded-md py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline w-full"
                   id="name"
                   v-model="user.name"
-                  type="text"
+                  class="appearance-none border rounded-md py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline w-full"
                   placeholder="Ad"
+                  type="text"
               />
             </div>
             <div class="mb-4">
@@ -23,11 +23,11 @@
                 Soyad
               </label>
               <input
-                  class="appearance-none border rounded-md py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline w-full"
                   id="soyad"
                   v-model="user.surname"
-                  type="text"
+                  class="appearance-none border rounded-md py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline w-full"
                   placeholder="Soyad"
+                  type="text"
               />
             </div>
             <div class="mb-4">
@@ -35,11 +35,11 @@
                 Email Adresi
               </label>
               <input
-                  class="appearance-none border rounded-md py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline w-full"
                   id="email"
                   v-model="user.email"
-                  type="email"
+                  class="appearance-none border rounded-md py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline w-full"
                   placeholder="Email Adresi"
+                  type="email"
               />
             </div>
             <div class="mb-4">
@@ -47,11 +47,11 @@
                 Şifre
               </label>
               <input
-                  class="appearance-none border rounded-md py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline w-full"
                   id="password"
                   v-model="user.password"
-                  type="password"
+                  class="appearance-none border rounded-md py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline w-full"
                   placeholder="Şifre"
+                  type="password"
               />
             </div>
             <div class="mb-4">
@@ -59,11 +59,11 @@
                 Şifre tekrar
               </label>
               <input
-                  class="appearance-none border rounded-md py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline w-full"
                   id="confirmPassword"
-                  type="password"
                   v-model="user.confirmPassword"
+                  class="appearance-none border rounded-md py-2 px-3 text-primary-700 leading-tight focus:outline-none focus:shadow-outline w-full"
                   placeholder="Şifre Tekrar"
+                  type="password"
               />
             </div>
             <button
@@ -72,7 +72,7 @@
             >
               Kayıt Ol
             </button>
-          </form>
+          </div>
         </div>
       </div>
     </div>
@@ -88,10 +88,10 @@
 </style>
 
 <script>
-import axios from "axios";
-import { mapActions } from "vuex";
+import {mapActions} from "vuex";
 import NavBar from "../components/NavBar.vue";
 import axiosInstance from "../config/AxiosInstance.js";
+import * as WebServiceUrl from "../config/WebServiceURL";
 
 export default {
   name: "Register",
@@ -114,18 +114,22 @@ export default {
         alert("Şifreler aynı değil!");
         return;
       }
-
+      const formData = new FormData();
+      formData.append("name", this.user.name);
+      formData.append("surname", this.user.surname);
+      formData.append("email", this.user.email);
+      formData.append("password", this.user.password);
       axiosInstance
-        .post("/api/v1/auth/users/public/register", this.user)
-        .then((response) => {
-          this.login(response.data.token);
-          this.$router.push("/dashboard");
-        })
+          .post(WebServiceUrl.register, formData, {headers: {'Content-Type': 'application/json'}})
+          .then((response) => {
+            alert(response.data);
+            this.$router.push("/login");
+          })
           // eslint-disable-next-line no-unused-vars
-        .catch((error) => {
-          console.log(error);
-          alert("Kayıt oluşturulurken hata oluştu!");
-        });
+          .catch((error) => {
+            console.log(error);
+            alert("Kayıt oluşturulurken hata oluştu!");
+          });
     },
   },
 };

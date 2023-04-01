@@ -2,7 +2,7 @@ const apiUrl = "http://localhost:8081/api";
 const version = "/v1";
 export const baseUrl = apiUrl + version;
 export const login = "/auth/public/login";
-
+export const register = baseUrl + "/auth/users/public/register"
 
 //restaurant
 const restaurantService = baseUrl +"/restaurants"
