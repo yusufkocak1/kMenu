@@ -10,7 +10,7 @@
     </diV>
     <div class="m-2 col-span-7">
       <category-parent :categories="categories" :restaurant-id="restaurant.id" v-if="selectedPanel===panels[0]"/>
-      <product-settings-parent v-if="selectedPanel===panels[1]" :categories="categories"/>
+      <product-settings-parent v-if="selectedPanel===panels[1]" :categories="categories" :restaurant="restaurant"/>
 
     </div>
 
