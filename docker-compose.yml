@@ -49,7 +49,21 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
-
+      
+  k-menu-server:
+    build: ./k-menu-server
+    container_name: k-menu-server
+    ports:
+      - "8083:8083"
+    depends_on:
+      - kafka
+      - postgresql
+    environment:
+      - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      
   logserver:
     build: ./LogServer
     container_name: LogServer
@@ -61,10 +75,27 @@ services:
       - SPRING_KAFKA_BOOTSTRAP-SERVERS=kafka:9092
 
   postgresql:
-    image: postgres
-    container_name: postgresql
-    ports:
+      image: postgres
+      container_name: postgresql
+      ports:
       - "5432:5432"
-    environment:
+      environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      volumes:
+      - postgresql-data:/var/lib/postgresql/data
+      command: postgres -c 'shared_preload_libraries=pg_stat_statements' -c 'max_prepared_transactions=256'
+  init-schemas:
+      image: postgres
+      depends_on:
+      - postgresql
+      environment:
+      - PGPASSWORD=postgres
+      - PGUSER=postgres
+      - PGDATABASE=postgres
+      - PGHOST=postgresql
+      volumes:
+      - ./init-schemas:/docker-entrypoint-initdb.d/
+  volumes:
+  postgresql-data:
+  

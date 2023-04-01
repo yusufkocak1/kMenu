@@ -19,13 +19,13 @@ public class MenuController {
     ProductService productService;
 
     @PostMapping("/addProduct")
-    public ResponseEntity<MenuItem> addCategory(@RequestBody MenuItemDTO menuItem) {
+    public ResponseEntity<MenuItem> addProduct(@RequestBody MenuItemDTO menuItem) {
         Optional<MenuItem> optionalMenuItem = Optional.ofNullable(productService.addMenuItem(menuItem));
 
         return optionalMenuItem.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_MODIFIED).build());
     }
     @GetMapping("/getProducts/{restaurantId}")
-    public ResponseEntity<List<MenuItem>> addCategory(@PathVariable String restaurantId) {
+    public ResponseEntity<List<MenuItem>> getProduct(@PathVariable String restaurantId) {
         Optional<List<MenuItem>> optionalMenuCategory = productService.getMenuItemsByRestaurantId(restaurantId);
 
         return optionalMenuCategory.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_MODIFIED).build());

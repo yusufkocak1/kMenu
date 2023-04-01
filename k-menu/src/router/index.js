@@ -11,7 +11,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes : [
     {
-      path: "/",
+      path: "/:restaurantId/:tableId",
       name: "Home",
       component: Home,
     },
@@ -55,6 +55,8 @@ router.beforeEach((to, from, next) => {
     "/register",
     "/forgot-password",
     "/reset-password",
+    `/${to.params.restaurantId}/${to.params.tableId}`
+
   ];
   const authRequired = !publicPages.includes(to.path);
   const loggedIn = localStorage.getItem("token");

@@ -1,20 +1,27 @@
 <template>
-  <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
-    <div class="md:flex">
-      <div class="md:flex-shrink-0">
-        <img class="h-48 w-full object-cover md:h-full md:w-48" src="/img/store.jpg" alt="Man looking at item at a store">
+  <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl container p-2 mt-10">
+    <div class="max-w-4xl">
+      <div v-for="category in getCategory">
+        <h1 class="border-2 bg-primary-900 text-white my-2 p-2">{{ category.name }}</h1>
+        <div v-for="(item, index) in items.filter(product=>product.category.id === category.id)" :key="index"
+             class="mx-2 grid grid-cols-4 border border-primary-700 p-3 rounded-xl shadow-lg -my-1">
+          <div :key="index" class="col-span-1">{{ item.name }}</div>
+          <div :key="index" class="col-span-1">{{ item.category.name }}</div>
+          <div :key="index" class="col-span-1">{{ item.price }} TL</div>
+          <button
+              class="col-span-1 bg-primary-700 hover:bg-white border hover:border-primary-700 hover:text-primary-700 text-white px-2 py-1 rounded-md "
+              @click="addBasket(item.id)">Sepete ekle
+          </button>
+        </div>
       </div>
-      <div class="p-8">
-        <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">Case study</div>
-        <a href="#" class="block mt-1 text-lg leading-tight font-medium text-black hover:underline">Finding customers for your new business</a>
-        <p class="mt-2 text-black-500">Getting a new business off the ground is a lot of hard work. Here are five ideas you can use to find your first customers.</p>
-      </div>
+
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import axiosInstance from "../config/AxiosInstance.js";
+import * as WebServiceUrl from "../config/WebServiceURL.js";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -23,33 +30,51 @@ export default {
     return {
       restaurantName: "",
       message: "Lütfen bekleyin, restoran bilgileri yükleniyor...",
+      items: []
     };
   },
   created() {
     // Web servisimizden restoran bilgilerini alıyoruz
-    axios
-        .get(`/api/restaurants/${this.$route.params.id}`)
-        .then((response) => {
-          this.restaurantName = response.data.name;
-          this.message = `Masanızın numarası: ${this.$route.params.tableNumber}`;
-        })
-        .catch((error) => {
-          console.log(error);
-          this.message = "Restoran bilgileri alınamadı, lütfen tekrar deneyin.";
-        });
+    this.getProduct();
+
   },
   methods: {
     showMenu() {
       // Menü sayfasına yönlendiriyoruz
       this.$router.push({
         name: "MenuPage",
-        params: { id: this.$route.params.id },
+        params: {id: this.$route.params.id},
       });
+    },
+    addBasket(id) {
+      alert(this.items.filter(item => item.id == id))
+    },
+    getProduct() {
+      axiosInstance.get(WebServiceUrl.getProduct + this.$route.params.restaurantId).then(response => {
+        this.items = response.data
+        console.log(this.items)
+      }).catch(error => alert(error))
     },
     callWaiter() {
       // Garson çağırma işlemlerini burada yapabilirsiniz
       alert("Garson çağrıldı.");
     },
+    removeDuplicates(arr) {
+      let uniqueArr = [];
+      for (let i = 0; i < arr.length; i++) {
+        if (uniqueArr.indexOf(arr[i]) === -1) {
+          uniqueArr.push(arr[i]);
+        }
+      }
+      return uniqueArr;
+    }
+
   },
+  computed: {
+    getCategory() {
+
+      return this.removeDuplicates(this.items.map(item => item.category))
+    }
+  }
 };
 </script>
