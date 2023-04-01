@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <RollingFile name="k-menu-log" fileName="logs/k-menu.log" filePattern="logs/k-menu-%d{yyyy-MM-dd}.log">
+            <JsonLayout />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="300 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10" />
+        </RollingFile>
+        <RollingFile name="k-stock-log" fileName="logs/k-stock.log" filePattern="logs/k-stock-%d{yyyy-MM-dd}.log">
+            <JsonLayout />
+            <Policies>
+                <SizeBasedTriggeringPolicy size="300 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="10" />
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="k-menu-log" />
+            <AppenderRef ref="k-stock-log" />
+        </Root>
+    </Loggers>
+</Configuration>
