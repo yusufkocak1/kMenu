@@ -48,7 +48,7 @@ services:
       - postgresql
     environment:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/postgres
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/postgres?currentSchema=auth
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
 
@@ -62,7 +62,7 @@ services:
       - postgresql
     environment:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/postgres
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/postgres?currentSchema=kmenu
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
 
@@ -76,6 +76,12 @@ services:
     environment:
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
 
+  vueapp:
+    build: ./k-menu
+    container_name: k-menu
+    ports:
+      - "8081:8081"
+
   postgresql:
     image: postgres
     container_name: postgresql
@@ -86,13 +92,6 @@ services:
       - POSTGRES_PASSWORD=postgres
     volumes:
       - postgresql-data:/var/lib/postgresql/data
-    command: postgres -c shared_preload_libraries=pg_stat_statements -c max_prepared_transactions=256
-
-  volumes:
-	postgresql-data:
-
-  vueapp:
-    build: ./kmenu
-    container_name: kmenu
-    ports:
-      - "8081:8081"
+    command: postgres -c shared_preload_libraries=pg_stat_statements -c max_prepared_transactions=
+volumes:
+  postgresql-data:
