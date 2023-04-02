@@ -24,7 +24,7 @@ public class MenuController {
 
         return optionalMenuItem.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_MODIFIED).build());
     }
-    @GetMapping("/getProducts/{restaurantId}")
+    @GetMapping("/public/getProducts/{restaurantId}")
     public ResponseEntity<List<MenuItem>> getProduct(@PathVariable String restaurantId) {
         Optional<List<MenuItem>> optionalMenuCategory = productService.getMenuItemsByRestaurantId(restaurantId);
 

@@ -18,7 +18,7 @@
         </div>
       </div>
       <div v-else class=" grid grid-cols-1">
-        <img src="../assets/kapak.png"/>
+        <img :src="imageUrl"/>
         <button
             class="col-span-1 mt-10 p-2 border-2 border-primary-700 bg-white text-primary-700 hover:bg-primary-700 hover:text-white rounded"
             @click="callWaiter">Garson Çağır
@@ -41,15 +41,17 @@ export default {
   name: "Home.vue",
   data() {
     return {
-      restaurantName: "",
+      restaurant: {},
       message: "Lütfen bekleyin, restoran bilgileri yükleniyor...",
       items: [],
-      showMenu: false
-
+      showMenu: false,
+      imageUrl:String,
+      restaurantId:""
     };
   },
   created() {
-    // Web servisimizden restoran bilgilerini alıyoruz
+    this.restaurantId = this.$route.params.restaurantId;
+
     this.getProduct();
 
   },
@@ -59,7 +61,7 @@ export default {
       alert(this.items.filter(item => item.id == id))
     },
     getProduct() {
-      axiosInstance.get(WebServiceUrl.getProduct + this.$route.params.restaurantId).then(response => {
+      axiosInstance.get(WebServiceUrl.getProduct + this.restaurantIdd).then(response => {
         this.items = response.data
         console.log(this.items)
       }).catch(error => alert(error))
@@ -83,6 +85,26 @@ export default {
 
       return categories
     }
+  },
+  mounted() {
+    axiosInstance.get(WebServiceUrl.getRestaurant + this.restaurantId).then(restaurantResponse=>{
+      this.restaurant = restaurantResponse.data
+      axiosInstance.get(WebServiceUrl + this.restaurant.backgroundImgUrl)
+          .then(response  => {
+            return response.arrayBuffer();
+          })
+          .then(imageBytes => {
+            const base64 = btoa(
+                new Uint8Array(imageBytes).reduce((data, byte) => data + String.fromCharCode(byte), "")
+            );
+            this.imageUrl = "data:image/jpeg;base64," + base64;
+          })
+          .catch(error => {
+            console.error(error);
+          });
+    })
+
+
   }
 };
 </script>

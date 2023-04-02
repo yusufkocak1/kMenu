@@ -7,12 +7,13 @@ public class RestaurantInfoDTO {
     private String name;
     private String contact;
     private String adminUserInfo;
+    private String backgroundImgUrl;
 
-
-    public RestaurantInfoDTO(String name, String contact, String adminUserInfo ) {
+    public RestaurantInfoDTO(String name, String contact, String adminUserInfo, String backgroundImgUrl) {
         this.name = name;
         this.contact = contact;
         this.adminUserInfo = adminUserInfo;
+        this.backgroundImgUrl = backgroundImgUrl;
     }
 
     public RestaurantInfoDTO() {
@@ -53,5 +54,13 @@ public class RestaurantInfoDTO {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getBackgroundImgUrl() {
+        return backgroundImgUrl;
+    }
+
+    public void setBackgroundImgUrl(String backgroundImgUrl) {
+        this.backgroundImgUrl = backgroundImgUrl;
     }
 }

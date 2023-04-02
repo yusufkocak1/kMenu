@@ -180,7 +180,8 @@
                   },
                     created() {
                       this.getProduct();
-                    }
+                    },
+
                   };
                 </script>
 

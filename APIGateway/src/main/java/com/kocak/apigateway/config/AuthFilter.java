@@ -36,7 +36,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
 
             final List<String> openEndpoints = List.of("/api/v1/auth/public/login","/api/v1/auth/public/verify","/api/v1/auth/users/public/register","/api/v1/restaurants/getMenu");
             final Predicate<ServerHttpRequest> isApiSecured = r -> openEndpoints.stream()
-                    .noneMatch(uri -> r.getURI().getPath().contains(uri));
+                    .noneMatch(uri -> r.getURI().getPath().contains(uri) || r.getURI().getPath().contains("/public/"));
 
             if (isApiSecured.test(request)) {
                 boolean isAuthorizationHeader = request.getHeaders().containsKey("AUTHORIZATION");

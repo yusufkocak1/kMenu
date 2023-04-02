@@ -6,9 +6,11 @@ import com.kocak.kmenuserver.dto.MenuCategoryDTO;
 import com.kocak.kmenuserver.dto.RestaurantInfoDTO;
 import com.kocak.kmenuserver.model.Floor;
 import com.kocak.kmenuserver.model.MenuCategory;
+import com.kocak.kmenuserver.service.ImageService;
 import com.kocak.kmenuserver.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.kocak.kmenuserver.model.User;
@@ -27,9 +29,11 @@ public class RestaurantInfoController {
 
     @Autowired
     private RestaurantService restaurantService;
+    @Autowired
+    ImageService imageService;
 
 
-    @GetMapping("/{id}")
+    @GetMapping("/public/{id}")
     public ResponseEntity<RestaurantInfoDTO> getRestaurantInfo(@PathVariable String id) {
         Optional<Restaurant> restaurantOpt = restaurantService.getRestaurantById(id);
 
@@ -42,10 +46,26 @@ public class RestaurantInfoController {
         restaurantInfoDTO.setId(restaurant.getId());
         restaurantInfoDTO.setName(restaurant.getName());
         restaurantInfoDTO.setContact(restaurant.getContactInfo());
-//        restaurantInfoDTO.setBackgroundImgFile(new MockMultipartFile(restaurant.getBackgroundImgUrl(), new byte[0]));
-
+        restaurantInfoDTO.setBackgroundImgUrl(restaurant.getBackgroundImgUrl());
         return ResponseEntity.ok(restaurantInfoDTO);
     }
+    @GetMapping("/public/image/{id}")
+    public ResponseEntity<byte[]> getImage(@PathVariable String id) throws IOException {
+        // id'ye göre resim dosyası seçimi yapın
+        byte[] image = imageService.getImageFile(id);
+
+        // eğer resim dosyası yoksa, 404 hata kodu döndürün
+        if (image == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // resim dosyasını HTTP yanıtına ekleyin ve yanıtı döndürün
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_JPEG)
+                .body(image);
+    }
+
+
     @PostMapping("/{restaurantId}/floors")
     public ResponseEntity<Floor> createFloor(@PathVariable String restaurantId, @RequestBody Floor floor) {
         Floor createdFloor = restaurantService.createFloor(restaurantId, floor);
