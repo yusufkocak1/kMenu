@@ -137,7 +137,7 @@ public class RestaurantService {
             Files.createDirectories(path.getParent());
             Files.write(path, image.getBytes());
 
-        return filePath;
+        return fileName;
     }
 
 

@@ -49,20 +49,31 @@ public class RestaurantInfoController {
         restaurantInfoDTO.setBackgroundImgUrl(restaurant.getBackgroundImgUrl());
         return ResponseEntity.ok(restaurantInfoDTO);
     }
-    @GetMapping("/public/image/{id}")
-    public ResponseEntity<byte[]> getImage(@PathVariable String id) throws IOException {
-        // id'ye göre resim dosyası seçimi yapın
-        byte[] image = imageService.getImageFile(id);
-
-        // eğer resim dosyası yoksa, 404 hata kodu döndürün
+    @GetMapping("/public/image/{name}")
+    public ResponseEntity<byte[]> getImage(@PathVariable String name) throws IOException {
+        String[] parts = name.split("\\.");
+        String extension = parts[parts.length - 1];
+        String mediaType;
+        switch (extension) {
+            case "png":
+                mediaType = MediaType.IMAGE_PNG_VALUE;
+                break;
+            case "jpg":
+            case "jpeg":
+                mediaType = MediaType.IMAGE_JPEG_VALUE;
+                break;
+            case "gif":
+                mediaType = MediaType.IMAGE_GIF_VALUE;
+                break;
+            default:
+                mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE;
+                break;
+        }
+        byte[] image = imageService.getImageFile(name);
         if (image == null) {
             return ResponseEntity.notFound().build();
         }
-
-        // resim dosyasını HTTP yanıtına ekleyin ve yanıtı döndürün
-        return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG)
-                .body(image);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType(mediaType)).body(image);
     }
 
 

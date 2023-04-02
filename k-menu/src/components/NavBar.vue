@@ -1,40 +1,40 @@
 <template>
 
-  <nav className="relative flex flex-wrap items-center justify-between px-2 py-3 bg-primary-800  shadow-lg ">
-    <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
-      <div className="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start">
-        <a className="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white"
+  <nav class="relative flex flex-wrap items-center justify-between px-2 py-3 bg-primary-800  shadow-lg ">
+    <div class="container px-4 mx-auto flex flex-wrap items-center justify-between">
+      <div class="w-full relative flex justify-between lg:w-auto px-4 lg:static lg:block lg:justify-start">
+        <a class="text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase text-white"
            href="/">
           K-Menu
         </a>
         <button
-            className="text-white cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
+            class="text-white cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
             type="button" v-on:click="toggleNavbar()">
           <FontAwesomeIcon icon="bars" />
         </button>
       </div>
-      <div className="lg:flex lg:flex-grow items-center">
-        <ul className="flex flex-col lg:flex-row list-none ml-auto">
+      <div class="lg:flex lg:flex-grow items-center">
+        <ul class="flex flex-col lg:flex-row list-none ml-auto">
 
-          <li v-if="showMenu" className="nav-item items-center lg:hidden">
-            <a className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 rounded-md border-2 border-black-900 hover:bg-black-900"
+          <li v-if="showMenu" class="nav-item items-center lg:hidden">
+            <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 rounded-md border-2 border-black-900 hover:bg-black-900"
                href="/exit">
               <FontAwesomeIcon icon="sign-out-alt" />
-              <span className="ml-2">Çıkış Yap</span>
+              <span class="ml-2">Çıkış Yap</span>
             </a>
           </li>
-          <li v-if="isLogin" className="nav-item items-center hidden lg:block">
-            <a className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 rounded-md border-2 border-white hover:bg-black-900"
+          <li v-if="isLogin" class="nav-item items-center hidden lg:block">
+            <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 rounded-md border-2 border-white hover:bg-black-900"
                href="/exit">
               <FontAwesomeIcon icon="sign-out-alt" />
-              <span className="ml-2">Çıkış Yap</span>
+              <span class="ml-2">Çıkış Yap</span>
             </a>
           </li>
-          <li v-else className="nav-item items-center hidden lg:block">
-          <a className="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 rounded-md border-2 border-white hover:bg-black-900"
+          <li v-else class="nav-item items-center hidden lg:block">
+          <a class="px-3 py-2 flex items-center text-xs uppercase font-bold leading-snug text-white hover:opacity-75 rounded-md border-2 border-white hover:bg-black-900"
              href="/login">
             <FontAwesomeIcon icon="sign-in-alt" />
-            <span className="ml-2">Giriş Yap</span>
+            <span class="ml-2">Giriş Yap</span>
           </a>
         </li>
         </ul>
