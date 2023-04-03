@@ -27,9 +27,9 @@
 <script>
 
 
-import axiosInstance from "../config/AxiosInstance.js";
-import * as WebServiceUrl from "../config/WebServiceURL";
-import MenuSettingsParent from "./dashboard/menu/MenuSettingsParent.vue";
+import axiosInstance from "../../config/AxiosInstance.js";
+import * as WebServiceUrl from "../../config/WebServiceURL.js";
+import MenuSettingsParent from "./menu/MenuSettingsParent.vue";
 
 export default {
   components: {

@@ -50,10 +50,10 @@
 </template>
 
 <script>
-import AddRestaurantDialog from "../components/AddRestaurantDialog.vue";
-import axiosInstance from "../config/AxiosInstance";
-import * as WebServiceUrl from "../config/WebServiceURL";
-import * as Util from "../utils/util.js";
+import AddRestaurantDialog from "./AddRestaurantDialog.vue";
+import axiosInstance from "../../config/AxiosInstance.js";
+import * as WebServiceUrl from "../../config/WebServiceURL.js";
+import * as Util from "../../utils/util.js";
 import Restaurant from "./Restaurant.vue";
 
 export default {

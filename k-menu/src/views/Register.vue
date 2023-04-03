@@ -89,7 +89,7 @@
 
 <script>
 import {mapActions} from "vuex";
-import NavBar from "../components/NavBar.vue";
+import NavBar from "../components/dashboard/NavBar.vue";
 import axiosInstance from "../config/AxiosInstance.js";
 import * as WebServiceUrl from "../config/WebServiceURL";
 

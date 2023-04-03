@@ -12,8 +12,8 @@
 
 <script>
 
-import NavBar from "../components/NavBar.vue";
-import UserRestaurant from "../components/UserRestaurant.vue";
+import NavBar from "../components/dashboard/NavBar.vue";
+import UserRestaurant from "../components/dashboard/UserRestaurant.vue";
 
 export default {
   name: "DashBoard",
