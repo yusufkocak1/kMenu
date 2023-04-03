@@ -28,6 +28,6 @@ public class MenuController {
     public ResponseEntity<List<MenuItem>> getProduct(@PathVariable String restaurantId) {
         Optional<List<MenuItem>> optionalMenuCategory = productService.getMenuItemsByRestaurantId(restaurantId);
 
-        return optionalMenuCategory.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_MODIFIED).build());
+        return optionalMenuCategory.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 }

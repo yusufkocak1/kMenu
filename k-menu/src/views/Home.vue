@@ -6,14 +6,13 @@
         <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-3xl container p-2">
             <div class="max-w-4xl">
                 <div v-if="showMenu">
-                    <div class="grid grid-cols-4">
-                        <button class=" w-8 h-8 rounded-full p-0 border-2 border-sunset-orange-700 text-sunset-orange-700 hover:bg-sunset-orange-700 hover:text-white col-span-3 "
+                    <div class="grid grid-cols-5">
+                        <button class=" w-8 h-8 rounded-full p-0 border-2 border-sunset-orange-700 text-sunset-orange-700 hover:bg-sunset-orange-700 hover:text-white col-span-4 mr-1"
                                 @click="showMenu=!showMenu">X
                         </button>
-                        <button class="flex items-center justify-center bg-rust-700 text-white text-lg font-bold py-2 px-4 rounded-full col-span-1">
-                            <FontAwesomeIcon class="p-1" icon="faShoppingCart"/>
-                            sepet
-                            <span class="ml-2 bg-red-500 rounded-full h-6 w-6 flex items-center justify-center text-white text-sm">{{ count }}</span>
+                        <button class="flex items-center justify-center bg-rust-700 text-white text-lg font-bold py-2 rounded-full col-span-1 w-20">
+                            <FontAwesomeIcon icon="fa-solid fa-cart-shopping"/>
+                            <span class="ml-2 bg-mountain-meadow-600 rounded-full h-4 w-6 flex items-center justify-center text-white text-sm">{{ count }}</span>
                         </button>
                     </div>
                     <div v-for="category in getCategory">
@@ -52,11 +51,14 @@
 import axiosInstance from "../config/AxiosInstance.js";
 import * as WebServiceUrl from "../config/WebServiceURL.js";
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
-import {faShoppingCart} from '@fortawesome/free-solid-svg-icons'
+import {faCartShopping} from '@fortawesome/free-solid-svg-icons'
 import {library} from "@fortawesome/fontawesome-svg-core";
 
 export default {
     // eslint-disable-next-line vue/multi-word-component-names
+    components:{
+        FontAwesomeIcon
+    },
     name: "Home.vue",
     data() {
         return {
@@ -73,13 +75,11 @@ export default {
         this.restaurantId = this.$route.params.restaurantId;
 
         this.getProduct();
-        library.add(faShoppingCart);
+        library.add(faCartShopping);
 
     },
     methods: {
-
         addBasket(id) {
-
             this.count++
         },
         getProduct() {
