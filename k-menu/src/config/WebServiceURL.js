@@ -19,3 +19,9 @@ export const deleteCategory = restaurantService + "/deleteCategory/"
 export const addProduct = restaurantService +"/addProduct"
 export const getProduct = restaurantService + publicUrl +"/getProducts/"
 export const editProduct = restaurantService + "editProduct"
+
+export const addFloor = restaurantService + "/addFloor"
+export const getFloors = restaurantService + "/getFloors/"
+export const getTables = restaurantService + "/getTables/"
+export const addTables = restaurantService + "/addTables"
+

@@ -1,11 +1,15 @@
 package com.kocak.kmenuserver.service;
+import com.kocak.kmenuserver.dto.FloorDTO;
 import com.kocak.kmenuserver.dto.MenuCategoryDTO;
 import com.kocak.kmenuserver.dto.RestaurantInfoDTO;
+import com.kocak.kmenuserver.dto.TableDto;
 import com.kocak.kmenuserver.exception.FloorNotFoundException;
 import com.kocak.kmenuserver.exception.RestaurantNotFoundException;
 import com.kocak.kmenuserver.model.*;
 import com.kocak.kmenuserver.repository.*;
+import org.hibernate.annotations.Tables;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,23 +51,34 @@ public class RestaurantService {
         return restaurantRepository.save(restaurant);
     }
 
-    public Floor createFloor(String restaurantId, Floor floor) {
-        Optional<Restaurant> restaurant = restaurantRepository.findById(restaurantId);
+    public Floor createFloor(FloorDTO floorDTO) {
+        Optional<Restaurant> restaurant = restaurantRepository.findById(floorDTO.getRestaurantId());
         if (restaurant.isPresent()) {
+            Floor floor= new Floor(UUID.randomUUID().toString(),restaurant.get(),floorDTO.getName());
             floor.setRestaurant(restaurant.get());
             return floorRepository.save(floor);
         } else {
-            throw new RestaurantNotFoundException(restaurantId);
+            throw new RestaurantNotFoundException(floorDTO.getRestaurantId());
         }
     }
 
-    public Table createTable(Long floorId, Table table) {
-        Optional<Floor> floor = floorRepository.findById(floorId);
-        if (floor.isPresent()) {
+    public Table createTable(TableDto tableDto) {
+        Optional<Floor> floor = floorRepository.findById(tableDto.getFloorId());
+        Optional<Restaurant> restaurant = restaurantRepository.findById(tableDto.getRestaurantId());
+
+        if (floor.isPresent() && restaurant.isPresent()) {
+            Table table=  new Table();
             table.setFloor(floor.get());
+            table.setRestaurantId(tableDto.getRestaurantId());
+            table.setName(tableDto.getName());
+            table.setId(UUID.randomUUID().toString());
             return tableRepository.save(table);
         } else {
-            throw new FloorNotFoundException(floorId);
+            if(floor.isEmpty()){
+                throw new FloorNotFoundException(tableDto.getFloorId());
+            } else{
+                throw new RestaurantNotFoundException(tableDto.getRestaurantId());
+            }
         }
     }
     public Optional<MenuCategory> createCategory(MenuCategoryDTO menuCategoryDTO) {
@@ -140,6 +155,25 @@ public class RestaurantService {
         return fileName;
     }
 
+
+    public Optional<List<Floor>> getFloorsByRestaurantId(String restaurantId) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new RestaurantNotFoundException( restaurantId));
+        Optional<List<Floor>> floors = floorRepository.findByRestaurant(restaurant);
+        if (floors.isEmpty()) {
+            throw new FloorNotFoundException();
+        }
+        return floors;
+    }
+    public Optional<List<Table>> getTablesByRestaurantId(String restaurantId) {
+        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new RestaurantNotFoundException( restaurantId));
+        Optional<List<Table>> tables = tableRepository.findByRestaurantId(restaurantId);
+        if (tables.isEmpty()) {
+            throw new FloorNotFoundException();
+        }
+        return tables;
+    }
 
 }
 

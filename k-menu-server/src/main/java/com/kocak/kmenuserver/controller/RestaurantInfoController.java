@@ -2,10 +2,11 @@ package com.kocak.kmenuserver.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kocak.kmenuserver.dto.FloorDTO;
 import com.kocak.kmenuserver.dto.MenuCategoryDTO;
 import com.kocak.kmenuserver.dto.RestaurantInfoDTO;
-import com.kocak.kmenuserver.model.Floor;
-import com.kocak.kmenuserver.model.MenuCategory;
+import com.kocak.kmenuserver.dto.TableDto;
+import com.kocak.kmenuserver.model.*;
 import com.kocak.kmenuserver.service.ImageService;
 import com.kocak.kmenuserver.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.kocak.kmenuserver.model.User;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import com.kocak.kmenuserver.model.Restaurant;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -77,10 +76,27 @@ public class RestaurantInfoController {
     }
 
 
-    @PostMapping("/{restaurantId}/floors")
-    public ResponseEntity<Floor> createFloor(@PathVariable String restaurantId, @RequestBody Floor floor) {
-        Floor createdFloor = restaurantService.createFloor(restaurantId, floor);
+    @PostMapping("/addFloor")
+    public ResponseEntity<Floor> createFloor( @RequestBody FloorDTO floor) {
+        Floor createdFloor = restaurantService.createFloor(floor);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdFloor);
+    }
+    @GetMapping("/getFloors/{restaurantId}")
+    public ResponseEntity<List<Floor>> getFloorsByRestaurantId(@PathVariable("restaurantId") String restaurantId){
+        Optional<List<Floor>> optionalFloors = restaurantService.getFloorsByRestaurantId(restaurantId);
+        return     optionalFloors.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+
+    }
+    @PostMapping("/addTables")
+    public ResponseEntity<Table> createTable( @RequestBody TableDto tableDto) {
+        Table createdFloor = restaurantService.createTable(tableDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdFloor);
+    }
+    @GetMapping("/getTables/{restaurantId}")
+    public ResponseEntity<List<Table>> getTablesByRestaurantId(@PathVariable("restaurantId") String restaurantId){
+        Optional<List<Table>> optionalTables = restaurantService.getTablesByRestaurantId(restaurantId);
+        return     optionalTables.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+
     }
     @PostMapping(value = "/addRestaurant", consumes = { "multipart/form-data" })
     public ResponseEntity<User> createRestaurant(@RequestParam("file") MultipartFile file,

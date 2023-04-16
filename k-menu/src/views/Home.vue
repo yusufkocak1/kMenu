@@ -37,7 +37,9 @@ import {faCartShopping} from '@fortawesome/free-solid-svg-icons'
 import {library} from "@fortawesome/fontawesome-svg-core";
 import MenuList from "../components/menu/MenuList.vue";
 import ShoppingCart from "../components/menu/ShoppingCart.vue";
+import {useToast} from "vue-toastification";
 
+const toast = useToast()
 export default {
     // eslint-disable-next-line vue/multi-word-component-names
     components: {
@@ -69,11 +71,10 @@ export default {
         getProduct() {
             axiosInstance.get(WebServiceUrl.getProduct + this.restaurantId).then(response => {
                 this.items = response.data
-                console.log(this.items)
-            }).catch(error => alert(error))
+            }).catch(error => toast.error(error))
         },
         callWaiter() {
-            alert("Garson çağrıldı.");
+            toast.success("Garson Çağrıldı")
         },
         showShoppingCart(){
             this.showMenu = false;

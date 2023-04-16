@@ -22,6 +22,15 @@ public class Floor {
     @Column(nullable = false)
     private String name;
 
+    public Floor(String id, Restaurant restaurant, String name) {
+        this.id = id;
+        this.restaurant = restaurant;
+        this.name = name;
+    }
+
+
+    public Floor() {
+    }
     // other fields and their getters/setters
 
 }

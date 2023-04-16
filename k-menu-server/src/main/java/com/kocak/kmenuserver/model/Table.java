@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashMap;
+
 @Entity
 @javax.persistence.Table(name = "tables")
 @Getter
@@ -17,11 +19,9 @@ public class Table {
     @JoinColumn(name = "floor_id", nullable = false)
     private Floor floor;
 
-    @Column(nullable = false)
-    private int x;
+    private String restaurantId;
 
-    @Column(nullable = false)
-    private int y;
+    private String name;
 
     private boolean active;
 
