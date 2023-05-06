@@ -34,4 +34,8 @@ public class ProductService {
 
         return productRepository.findByRestaurant(restaurantRepository.findById(restaurantId).get());
     }
+    public Optional<MenuItem> getMenuItemById(String id){
+
+        return productRepository.findById(id);
+    }
 }

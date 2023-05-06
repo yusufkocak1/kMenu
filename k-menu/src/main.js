@@ -12,4 +12,8 @@ import "vue-toastification/dist/index.css";
 
 library.add(faSignOutAlt, faBars,faSave)
 
-createApp(App).use(router).use(Toast,{position:POSITION.TOP_CENTER}).component('font-awesome-icon', FontAwesomeIcon).mount('#app')
+createApp(App)
+    .use(router)
+    .use(Toast,{position:POSITION.TOP_CENTER})
+    .component('font-awesome-icon', FontAwesomeIcon)
+    .mount('#app')

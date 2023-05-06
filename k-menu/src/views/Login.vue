@@ -37,6 +37,7 @@
 <script>
 import * as WebServiceUrl from "../config/WebServiceURL";
 import axiosInstance from "../config/AxiosInstance";
+import toast from "../mixins/toast.js";
 
 export default {
   name: "Login",
@@ -66,7 +67,7 @@ export default {
         })
         .catch((error) => {
           // Hata oluştuğunda alert ile hata mesajı gösterin
-          alert("Giriş yaparken bir hata oluştu. Lütfen tekrar deneyin.");
+            toast.error("Giriş yaparken bir hata oluştu. Lütfen tekrar deneyin.");
           console.log(error);
         });
     },
